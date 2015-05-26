@@ -1,4 +1,5 @@
 var socket = io.connect();
+var name = "";
 
 $(document).ready(function() {
   var chatApp = new Chat(socket);
@@ -9,6 +10,7 @@ $(document).ready(function() {
 
     if (result.success) {
       message = 'You are now known as ' + result.name + '.';
+      name = result.name;
     } else {
       message = result.message;
     }
@@ -25,8 +27,7 @@ $(document).ready(function() {
 
   // Display received messages
   socket.on('message', function (message) {
-    var newElement = $('<div></div>').text(message.text);
-    $('#messages').append(newElement);
+    $('#messages').append(divEscapedContentElement(message.text));
   });
 
   // Display list of rooms available
@@ -83,7 +84,7 @@ function processUserInput(chatApp, socket) {
   // Broadcast non-command input to other users
   } else {
     chatApp.sendMessage($('#room').text(), message);
-    $('#messages').append(divEscapedContentElement(message));
+    $('#messages').append(divEscapedContentElement(name + ' : ' + message));
     $('#messages').scrollTop($('#messages').prop('scrollHeight'));
   }
 
