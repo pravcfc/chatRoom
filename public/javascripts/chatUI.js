@@ -16,6 +16,7 @@ $(document).ready(function() {
     }
 
     $('#messages').append(divSystemContentElement(message));
+    $('#messages').scrollTop($('#messages').prop('scrollHeight'));
   });
 
   // Display the results of a room change
@@ -23,11 +24,13 @@ $(document).ready(function() {
     $('#room').text(result.room);
     $('#messages').empty();
     $('#messages').append(divSystemContentElement('Room changed.'));
+    $('#messages').scrollTop($('#messages').prop('scrollHeight'));
   });
 
   // Display received messages
   socket.on('message', function (message) {
     $('#messages').append(divEscapedContentElement(message.text));
+    $('#messages').scrollTop($('#messages').prop('scrollHeight'));
   });
 
   // Display list of rooms available
